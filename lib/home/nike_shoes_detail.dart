@@ -1,10 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nikestore/home/home.dart';
 import 'package:nikestore/home/nike_shoes.dart';
+import 'package:nikestore/home/nike_shopping_cart.dart';
 
 class NikeShoesDetail extends StatelessWidget {
 final NikeShoes shoes;
 
+  Future<void> _openShoppingCart(BuildContext context)
+
+
+
+
+  async {
+  notifierButtonsVisible.value=false;
+  await Navigator.of(context).push(PageRouteBuilder(
+      opaque: false,pageBuilder: (_, animation1, __)
+  {
+    return FadeTransition(
+
+      opacity: animation1,
+        child: NikeShoppingCart(shoes: shoes,));
+  }));
+  notifierButtonsVisible.value=true;
+}
  NikeShoesDetail({Key key,@required this.shoes}):super(key: key);
 
   final ValueNotifier<bool> notifierButtonsVisible =  ValueNotifier(false);
@@ -27,13 +46,21 @@ final NikeShoes shoes;
           Positioned(left: 70,
             right: 70,
             top: 10,
-            child:Hero(tag: 'model_${shoes.model}',
-              child: FittedBox(
-                child:Text(shoes.modelNumber.toString(),
-                  style: TextStyle(
-                      color: Colors.black12.withOpacity(0.05),
-                      fontWeight: FontWeight.bold
-                  ),),
+            child:Hero(tag: 'number_${shoes.model}',
+              child: ShakeTransition(
+                axis: Axis.vertical,
+                duration: const Duration(milliseconds: 1000),
+              offset: 20,
+                child: Material(
+                  color: Colors.transparent,
+                  child: FittedBox(
+                    child:Text(shoes.modelNumber.toString(),
+                      style: TextStyle(
+                          color: Colors.black12.withOpacity(0.05),
+                          fontWeight: FontWeight.bold
+                      ),),
+                  ),
+                ),
               ),
             ) ,
           ),
@@ -44,10 +71,15 @@ final NikeShoes shoes;
                 final tag = index==0?'image_${shoes.model}':'image_${shoes.model}_$index';
                 return Container(
                   alignment: Alignment.center,
-                  child: Hero(tag: tag,
-                    child: Image.asset(shoes.images[index],
-                      height: 200,
-                      width: 200,),
+                  child: ShakeTransition(
+                    axis: Axis.vertical,
+                    duration: index==0?const Duration(milliseconds:900 ):Duration.zero,
+                    offset: 10,
+                    child: Hero(tag: tag,
+                      child: Image.asset(shoes.images[index],
+                        height: 200,
+                        width: 200,),
+                    ),
                   ),
                 );
               }),
@@ -86,60 +118,84 @@ final NikeShoes shoes;
                     children: [],
                   ),
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(shoes.model,
-                      style: TextStyle(
+                ShakeTransition(
 
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12,right: 12),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(shoes.model,
+                          style: TextStyle(
 
-                      ),),
-                    const Spacer(),
-                    Expanded(
-                      child: Column(mainAxisAlignment: MainAxisAlignment.end,
-                       //crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text('\$${shoes.oldPrice.toInt().toString()}',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
-                                decoration: TextDecoration.lineThrough
-                            ),),
-                          Text('\$${shoes.currentPrice.toInt().toString()}',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20
-                            ),),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
 
-                        ],
-                      ),
+                          ),),
+                        const Spacer(),
+                        Expanded(
+                          child: Column(mainAxisAlignment: MainAxisAlignment.end,
+                           //crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text('\$${shoes.oldPrice.toInt().toString()}',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13,
+                                    decoration: TextDecoration.lineThrough
+                                ),),
+                              Text('\$${shoes.currentPrice.toInt().toString()}',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20
+                                ),),
+
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
                 SizedBox(height: 20,),
-                Text("AVAILABLE SIZE ",
-                style: TextStyle(
-                  fontSize: 11
-                ),),
-
-                Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _ShoesSizeItem(text: '6',),
-                    _ShoesSizeItem(text: '7',),
-                    _ShoesSizeItem(text: '9',),
-                    _ShoesSizeItem(text: '10',),
-                    _ShoesSizeItem(text: '11',),
-                    SizedBox(height: 20,),
-
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(right: 12,left: 12),
+                  child: ShakeTransition(
+                    duration: Duration(milliseconds: 1100),
+                    child: Text("AVAILABLE SIZE ",
+                    style: TextStyle(
+                      fontSize: 13
+                    ),),
+                  ),
                 ),
-                Text("DISCRIPTION",
-                  style: TextStyle(
-                      fontSize: 11
-                  ),),
+                SizedBox(height: 20,),
+                ShakeTransition(
+                  duration: Duration(milliseconds: 1100),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12,right: 12),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _ShoesSizeItem(text: '6',),
+                        _ShoesSizeItem(text: '7',),
+                        _ShoesSizeItem(text: '9',),
+                        _ShoesSizeItem(text: '10',),
+                        _ShoesSizeItem(text: '11',),
+                        SizedBox(height: 20,),
+
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20,),
+                ShakeTransition(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 12,left: 12),
+                    child: Text("DISCRIPTION",
+                      style: TextStyle(
+                          fontSize: 11
+                      ),),
+                  ),
+                ),
 
               ],
             ),
@@ -160,13 +216,15 @@ final NikeShoes shoes;
                       heroTag: 'fav_2',
                       backgroundColor: Colors.black,
                       child: Icon(Icons.shopping_cart),
-                      onPressed: () {})
+                      onPressed: () {
+                        _openShoppingCart(context);
+                      })
                 ],
               ),
             ),
             builder: (context, value,child) {
               return AnimatedPositioned(
-                duration: Duration(milliseconds: 200),
+                duration: Duration(milliseconds: 300),
                   right: 0,
                   left: 0,
                   bottom: value ?0.0:-kToolbarHeight,
