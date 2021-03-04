@@ -4,11 +4,17 @@ import 'package:nikestore/home/home.dart';
 import 'package:nikestore/home/nike_shoes.dart';
 import 'package:nikestore/home/nike_shopping_cart.dart';
 
-class NikeShoesDetail extends StatelessWidget {
+class NikeShoesDetail extends StatefulWidget {
 final NikeShoes shoes;
 
-  Future<void> _openShoppingCart(BuildContext context)
+ NikeShoesDetail({Key key,@required this.shoes}):super(key: key);
 
+  @override
+  _NikeShoesDetailState createState() => _NikeShoesDetailState();
+}
+
+class _NikeShoesDetailState extends State<NikeShoesDetail> {
+  Future<void> _openShoppingCart(BuildContext context)
 
 
 
@@ -20,11 +26,10 @@ final NikeShoes shoes;
     return FadeTransition(
 
       opacity: animation1,
-        child: NikeShoppingCart(shoes: shoes,));
+        child: NikeShoppingCart(shoes: widget.shoes,));
   }));
   notifierButtonsVisible.value=true;
 }
- NikeShoesDetail({Key key,@required this.shoes}):super(key: key);
 
   final ValueNotifier<bool> notifierButtonsVisible =  ValueNotifier(false);
 
@@ -35,10 +40,10 @@ final NikeShoes shoes;
         children: [
           Positioned.fill(
             child:   Hero(
-              tag: 'background_${shoes.model}',
+              tag: 'background_${widget.shoes.model}',
               child: Container(
 
-                color: Color(shoes.color),
+                color: Color(widget.shoes.color),
 
               ),
             ),
@@ -46,7 +51,7 @@ final NikeShoes shoes;
           Positioned(left: 70,
             right: 70,
             top: 10,
-            child:Hero(tag: 'number_${shoes.model}',
+            child:Hero(tag: 'number_${widget.shoes.model}',
               child: ShakeTransition(
                 axis: Axis.vertical,
                 duration: const Duration(milliseconds: 1000),
@@ -54,7 +59,7 @@ final NikeShoes shoes;
                 child: Material(
                   color: Colors.transparent,
                   child: FittedBox(
-                    child:Text(shoes.modelNumber.toString(),
+                    child:Text(widget.shoes.modelNumber.toString(),
                       style: TextStyle(
                           color: Colors.black12.withOpacity(0.05),
                           fontWeight: FontWeight.bold
@@ -66,9 +71,9 @@ final NikeShoes shoes;
           ),
 
           PageView.builder(
-              itemCount: shoes.images.length,
+              itemCount: widget.shoes.images.length,
               itemBuilder: (context,index){
-                final tag = index==0?'image_${shoes.model}':'image_${shoes.model}_$index';
+                final tag = index==0?'image_${widget.shoes.model}':'image_${widget.shoes.model}_$index';
                 return Container(
                   alignment: Alignment.center,
                   child: ShakeTransition(
@@ -76,7 +81,7 @@ final NikeShoes shoes;
                     duration: index==0?const Duration(milliseconds:900 ):Duration.zero,
                     offset: 10,
                     child: Hero(tag: tag,
-                      child: Image.asset(shoes.images[index],
+                      child: Image.asset(widget.shoes.images[index],
                         height: 200,
                         width: 200,),
                     ),
@@ -87,13 +92,22 @@ final NikeShoes shoes;
       ),
     );
   }
+
+bool _hasBeenPressed6 = true;
+  bool _hasBeenPressed7 = true;
+  bool _hasBeenPressed9 = true;
+  bool _hasBeenPressed10 = true;
+  bool _hasBeenPressed11 = true;
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
 
       notifierButtonsVisible.value =true;
 
+
     });
+
 
     return Scaffold(
       appBar: AppBar(elevation: 0,
@@ -124,7 +138,7 @@ final NikeShoes shoes;
                     padding: const EdgeInsets.only(left: 12,right: 12),
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(shoes.model,
+                        Text(widget.shoes.model,
                           style: TextStyle(
 
                               fontWeight: FontWeight.w600,
@@ -136,14 +150,14 @@ final NikeShoes shoes;
                           child: Column(mainAxisAlignment: MainAxisAlignment.end,
                            //crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text('\$${shoes.oldPrice.toInt().toString()}',
+                              Text('\$${widget.shoes.oldPrice.toInt().toString()}',
                                 style: TextStyle(
                                     color: Colors.red,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 13,
                                     decoration: TextDecoration.lineThrough
                                 ),),
-                              Text('\$${shoes.currentPrice.toInt().toString()}',
+                              Text('\$${widget.shoes.currentPrice.toInt().toString()}',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -175,11 +189,78 @@ final NikeShoes shoes;
                     padding: const EdgeInsets.only(left: 12,right: 12),
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _ShoesSizeItem(text: '6',),
-                        _ShoesSizeItem(text: '7',),
-                        _ShoesSizeItem(text: '9',),
-                        _ShoesSizeItem(text: '10',),
-                        _ShoesSizeItem(text: '11',),
+                        Container(decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: _hasBeenPressed6 ? Colors.transparent : Colors.black12,
+                        ),
+                            child: GestureDetector(onTap: (){
+                              setState(() {
+                                _hasBeenPressed6 = !_hasBeenPressed6;
+                              });
+                            },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: _ShoesSizeItem(text: '6',),
+                                ))),
+
+                        Container(decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: _hasBeenPressed7 ? Colors.transparent : Colors.black12,
+                        ),
+                            child: GestureDetector(onTap: (){
+                              setState(() {
+                                _hasBeenPressed7 = !_hasBeenPressed7;
+                              });
+                            },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: _ShoesSizeItem(text: '7',),
+                                ))),
+
+                        Container(decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: _hasBeenPressed10 ? Colors.transparent : Colors.black12,
+                        ),
+                            child: GestureDetector(onTap: (){
+                              setState(() {
+                                _hasBeenPressed10 = !_hasBeenPressed10;
+                              });
+                            },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: _ShoesSizeItem(text: '10',),
+                                ))),
+
+
+                        Container(decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: _hasBeenPressed9 ? Colors.transparent : Colors.black12,
+                        ),
+                            child: GestureDetector(onTap: (){
+                              setState(() {
+                                _hasBeenPressed9 = !_hasBeenPressed9;
+                              });
+                            },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: _ShoesSizeItem(text: '9',),
+                                ))),
+
+
+                        Container(decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: _hasBeenPressed11 ? Colors.transparent : Colors.black12,
+                        ),
+                            child: GestureDetector(onTap: (){
+                              setState(() {
+                                _hasBeenPressed11 = !_hasBeenPressed11;
+                              });
+                            },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: _ShoesSizeItem(text: '11'
+                                      '',),
+                                ))),
                         SizedBox(height: 20,),
 
                       ],
